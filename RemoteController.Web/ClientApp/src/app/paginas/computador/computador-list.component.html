@@ -1,0 +1,132 @@
+<h1 id="tableLabel">Lista de Computador Ativos</h1>
+
+<p>
+  É possível executar comandos como “dir, cd” do cmd e comandos do powershell também e receber o retorno deles.
+</p>
+<p>
+  A aplicação cliente deve se registrar na aplicação web, tornando possível a interação com aquela máquina.
+</p>
+<p>
+  Deve ser possível registrar o log de execução de comandos bem como o retorno deles, para serem visualizados posteriormente.
+</p>
+<p>
+  Deve ser possível executar um mesmo comando em várias máquinas de uma única vez.
+</p>
+
+<p *ngIf="!computadores"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="computadores">
+  <thead>
+    <tr>
+      <th>
+        <button type="button" class="btn btn-link" title="Terminal Multiplo" (click)="openTerminalMult()">
+          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-terminal-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm9.5 5.5h-3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zm-6.354-.354L4.793 6.5 3.146 4.854a.5.5 0 1 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708z" />
+          </svg>
+        </button>
+      </th>
+      <th>Power</th>
+      <th>Nome da Máquina</th>
+      <th>IP Local</th>
+      <th>Antivirus Instalado</th>
+      <th>Firewall Ativo</th>
+      <th>Versão do Windows</th>
+      <th>Versão do .NET Framework</th>
+      <th>Espaço HD Disponível</th>
+      <th>Espaço HD Total</th>
+      <th>LOG</th>
+      <th>Terminal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let computador of computadores">
+      <td><input type="checkbox" *ngIf="computador.isAvaliable" /></td>
+      <td>
+        <svg *ngIf="computador.isAvaliable" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-power" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M5.578 4.437a5 5 0 1 0 4.922.044l.5-.866a6 6 0 1 1-5.908-.053l.486.875z" />
+          <path fill-rule="evenodd" d="M7.5 8V1h1v7h-1z" />
+        </svg>
+      </td>
+      <td>{{computador.name}}</td>
+      <td>{{computador.ipAddress}}</td>
+      <td>
+        <span *ngIf="computador.isAntivirusActive">Sim</span>
+        <span *ngIf="!computador.isAntivirusActive">Não</span>
+      </td>
+      <td>
+        <span *ngIf="computador.isFirewallActive">Sim</span>
+        <span *ngIf="!computador.isFirewallActive">Não</span>
+      </td>
+      <td>{{computador.windowsVersion}}</td>
+      <td>{{computador.dotNetFrameworkVersion}}</td>
+      <td>{{computador.spaceHdFree}}</td>
+      <td>{{computador.hdSize}}</td>
+      <td>
+        <button type="button" class="btn btn-link" title="LOG" (click)="open(computador)">
+          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-text" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M4 1h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H4z" />
+            <path fill-rule="evenodd" d="M4.5 10.5A.5.5 0 0 1 5 10h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z" />
+          </svg>
+        </button>
+      </td>
+      <td>
+        <button type="button" class="btn btn-link" title="Terminal" (click)="openTerminal(computador)" *ngIf="computador.isAvaliable">
+          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-terminal-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm9.5 5.5h-3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1zm-6.354-.354L4.793 6.5 3.146 4.854a.5.5 0 1 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708z" />
+          </svg>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- Modal LOG-->
+<modal [title]='"LOG"' [showClose]='true' (onClose)="close()" #logModal>
+  {{ bindModal(logModal) }}
+  <mhead></mhead>
+
+  <p *ngIf="!possuiLog"><em>Nenhum resultado encontrado</em></p>
+
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="possuiLog">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Comando</th>
+        <th>Resultado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let log of logs">
+        <td>{{log.data}}</td>
+        <td>{{log.CommandExeccuted}}</td>
+        <td>{{log.Result}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <mfoot><button calss='btn' (click)="close()">Ok</button></mfoot>
+</modal>
+
+
+<!-- Modal TERMINAL Unica Maquina-->
+<modal [title]='"TERMINAL"' [showClose]='true' (onClose)="closeTerminal()" #terminalModal>
+  {{ bindModal(terminalModal) }}
+  <mhead></mhead>
+  Comando:
+  <input class="text" />
+
+  <mfoot><button calss='btn' (click)="closeterminal()">Ok</button></mfoot>
+</modal>
+
+
+<!-- Modal TERMINAL Multiplas Maquinas-->
+<modal [title]='"TERMINAL MULTIPLAS MÁQUINAS"' [showClose]='true' (onClose)="closeTerminalMult()" #terminalMultModal>
+  {{ bindModal(terminalMultModal) }}
+  <mhead></mhead>
+  Comando:
+  <input class="text"/>
+  
+  <mfoot><button calss='btn' (click)="closeTerminalMult()">Ok</button></mfoot>
+</modal>
